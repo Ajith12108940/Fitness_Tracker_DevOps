@@ -1,0 +1,61 @@
+# Fitness Tracker Application Configuration
+
+app:
+  name: fitness-tracker-app
+
+  replicas: 3
+
+  image:
+    repository: dalalappagariajithkumar/fitness-tracker
+    tag: v1
+    pullPolicy: IfNotPresent
+
+  service:
+    name: fitness-tracker-service
+    type: LoadBalancer
+    port: 80
+    targetPort: 5000
+
+  env:
+    MONGODB_URI: "mongodb://mongodb-service:27017/fitness-tracker"
+    PORT: "5000"
+    HOST: "0.0.0.0"
+    NODE_ENV: "production"
+
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+    requests:
+      cpu: "250m"
+      memory: "256Mi"
+
+
+# MongoDB Configuration
+
+mongodb:
+  name: mongodb
+
+  replicas: 1
+
+  image:
+    repository: mongo
+    tag: "7-jammy"
+    pullPolicy: IfNotPresent
+
+  service:
+    name: mongodb-service
+    type: ClusterIP
+    port: 27017
+    targetPort: 27017
+
+  storage:
+    type: emptyDir
+
+
+# Helm Release Information
+
+metadata:
+  environment: production
+  version: "1.0.0"
+  maintainer: "Ajith DevOps Project"

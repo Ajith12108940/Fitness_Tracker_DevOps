@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.name }}
+spec:
+  replicas: {{ .Values.app.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name }}
+    spec:
+      containers:
+        - name: {{ .Values.app.name }}
+          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
+          imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.app.service.targetPort }}
+          env:
+            - name: MONGODB_URI
+              value: {{ .Values.app.env.MONGODB_URI | quote }}
+            - name: PORT
+              value: {{ .Values.app.env.PORT | quote }}
+            - name: HOST
+              value: {{ .Values.app.env.HOST | quote }}
+            - name: NODE_ENV
+              value: {{ .Values.app.env.NODE_ENV | quote }}
+          resources:
+            {{- toYaml .Values.app.resources | nindent 12 }}
