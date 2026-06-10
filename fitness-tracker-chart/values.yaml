@@ -3,7 +3,7 @@
 app:
   name: fitness-tracker-app
 
-  replicas: 2
+  replicas: 3
 
   image:
     repository: dalalappagariajithkumar/fitness-tracker
